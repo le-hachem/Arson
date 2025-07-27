@@ -1,4 +1,5 @@
 mod app;
+mod titlebar;
 
 use app::App;
 

@@ -1,0 +1,50 @@
+.titlebar {
+  height: 32px;
+  background: linear-gradient(to top, transparent, rgba(0, 0, 0, 0.712));
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding: 0 10px;
+  -webkit-app-region: drag;
+  z-index: 1000;
+}
+
+.titlebar-controls {
+  display: flex;
+  align-items: center;
+  -webkit-app-region: no-drag;
+}
+
+.titlebar-button {
+  width: 32px;
+  height: 32px;
+  background: transparent;
+  color: #00ff00;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.1s ease;
+  border-radius: 0;
+  border: none;
+  padding: 0;
+  margin: 0;
+}
+
+.titlebar-button svg {
+  width: 30%;
+  height: 30%;
+}
+
+.titlebar-button:hover {
+  background: rgba(0, 255, 0, 0.2);
+  box-shadow: 3px 3px 0px rgba(0, 255, 0, 0.5);
+  transform: translate(-1px, -1px);
+}
+
+.titlebar-button.close:hover {
+  background: #ff0000;
+  color: #ffffff;
+  box-shadow: 3px 3px 0px rgba(255, 0, 0, 0.7);
+  transform: translate(-1px, -1px);
+}
