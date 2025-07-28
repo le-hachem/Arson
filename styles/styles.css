@@ -15,13 +15,14 @@
 body {
   margin: 0;
   padding: 0;
-  overflow: hidden;
+  overflow: auto;
 }
 
 .app {
-  height: 100vh;
+  min-height: 100vh;
   display: flex;
   flex-direction: column;
+  overflow: auto;
 }
 
 :root {
@@ -38,6 +39,9 @@ body {
   flex-direction: column;
   justify-content: center;
   text-align: center;
+  overflow-y: auto;
+  max-height: 100vh;
+  padding: 20px;
 }
 
 #title {
@@ -54,78 +58,6 @@ body {
   margin-bottom: 3rem;
   color: #88ff88;
   text-shadow: 0 0 5px #00ff00;
-}
-
-.form-container {
-  max-width: 500px;
-  margin: 0 auto;
-  padding: 2rem;
-  border: 2px solid #00ff00;
-  border-radius: 8px;
-  background: #000000;
-  box-shadow: 0 0 20px rgba(0, 255, 0, 0.3);
-}
-
-.input-group {
-  margin-bottom: 1.5rem;
-  text-align: left;
-}
-
-.input-group label {
-  display: block;
-  margin-bottom: 0.5rem;
-  font-weight: bold;
-  color: #00ff00;
-  text-shadow: 0 0 5px #00ff00;
-}
-
-.retro-input {
-  width: 100%;
-  padding: 0.75rem;
-  background: #000000;
-  border: 2px solid #00ff00;
-  border-radius: 4px;
-  color: #00ff00;
-  font-size: 1rem;
-  box-sizing: border-box;
-  transition: all 0.3s ease;
-}
-
-.retro-input:focus {
-  outline: none;
-  border-color: #88ff88;
-  box-shadow: 0 0 10px rgba(0, 255, 0, 0.5);
-  background: #001100;
-}
-
-.retro-input::placeholder {
-  color: #44aa44;
-}
-
-.retro-button {
-  width: 100%;
-  padding: 1rem;
-  background: #000000;
-  border: 2px solid #00ff00;
-  border-radius: 4px;
-  color: #00ff00;
-  font-size: 1.1rem;
-  font-weight: bold;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-}
-
-.retro-button:hover {
-  background: #00ff00;
-  color: #000000;
-  box-shadow: 0 0 15px rgba(0, 255, 0, 0.7);
-}
-
-.retro-button:active {
-  transform: translateY(2px);
-  box-shadow: 0 0 10px rgba(0, 255, 0, 0.5);
 }
 
 @keyframes scanlines {
@@ -156,7 +88,6 @@ body {
   animation: scanlines 0.5s linear infinite;
 }
 
-
 .container {
   margin: 0;
   flex-direction: column;
@@ -164,4 +95,4 @@ body {
   text-align: center;
   flex: 1;
   padding: 20px;
-}
+} 

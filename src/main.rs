@@ -1,5 +1,8 @@
+#[macro_use]
+mod logging;
 mod app;
-mod titlebar;
+mod components;
+mod states;
 
 use app::App;
 

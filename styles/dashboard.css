@@ -1,0 +1,71 @@
+/* Dashboard Styles */
+.dashboard {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 2rem;
+  min-height: 100vh;
+}
+
+.user-info {
+  background: #000000;
+  border: 2px solid #00ff00;
+  border-radius: 8px;
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+  box-shadow: 0 0 20px rgba(0, 255, 0, 0.3);
+}
+
+.user-info h3 {
+  margin-top: 0;
+  margin-bottom: 1rem;
+  color: #00ff00;
+  text-shadow: 0 0 5px #00ff00;
+  font-size: 1.3rem;
+}
+
+.user-info p {
+  margin: 0.5rem 0;
+  color: #88ff88;
+  text-shadow: 0 0 3px #00ff00;
+}
+
+.user-info strong {
+  color: #00ff00;
+  text-shadow: 0 0 5px #00ff00;
+}
+
+.dashboard-content {
+  background: #000000;
+  border: 2px solid #00ff00;
+  border-radius: 8px;
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+  box-shadow: 0 0 20px rgba(0, 255, 0, 0.3);
+}
+
+.dashboard-content h3 {
+  margin-top: 0;
+  margin-bottom: 1rem;
+  color: #00ff00;
+  text-shadow: 0 0 5px #00ff00;
+  font-size: 1.3rem;
+}
+
+.dashboard-content p {
+  margin: 0.5rem 0;
+  color: #88ff88;
+  text-shadow: 0 0 3px #00ff00;
+}
+
+.logout-button {
+  max-width: 200px;
+  background: #330000;
+  border-color: #ff0000;
+  color: #ff0000;
+}
+
+.logout-button:hover {
+  background: #ff0000;
+  color: #000000;
+  box-shadow: 0 0 15px rgba(255, 0, 0, 0.7);
+} 
