@@ -27,7 +27,7 @@ impl Default for AcledParams {
         Self {
             start_date: "2024-01-01".to_string(),
             end_date: "2024-12-31".to_string(),
-            country: "Syria".to_string(),
+            country: "Lebanon".to_string(),
             event_type: "Battles".to_string(),
             limit: 100,
         }

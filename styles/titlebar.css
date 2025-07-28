@@ -1,6 +1,10 @@
 .titlebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
   height: 32px;
-  background: linear-gradient(to top, transparent, rgba(0, 0, 0, 0.712));
+  background: linear-gradient(to top, transparent, rgb(0, 0, 0));
   display: flex;
   align-items: center;
   justify-content: flex-end;
