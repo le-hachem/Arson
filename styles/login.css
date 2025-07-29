@@ -2,10 +2,10 @@
   max-width: 500px;
   width: 100%;
   padding: 2rem;
-  border: 2px solid #00ff00;
+  border: 2px solid var(--border-color);
   border-radius: 8px;
-  background: #000000;
-  box-shadow: 0 0 20px rgba(0, 255, 0, 0.3);
+  background: var(--background-color);
+  box-shadow: 0 0 20px var(--shadow-color);
 }
 
 .input-group {
@@ -17,17 +17,17 @@
   display: block;
   margin-bottom: 0.5rem;
   font-weight: bold;
-  color: #00ff00;
-  text-shadow: 0 0 5px #00ff00;
+  color: var(--text-color);
+  text-shadow: 0 0 5px var(--primary-color);
 }
 
 .input {
   width: 100%;
   padding: 0.75rem;
-  background: #000000;
-  border: 2px solid #00ff00;
+  background: var(--secondary-background);
+  border: 2px solid var(--border-color);
   border-radius: 4px;
-  color: #00ff00;
+  color: var(--text-color);
   font-size: 1rem;
   box-sizing: border-box;
   transition: all 0.3s ease;
@@ -35,22 +35,23 @@
 
 .input:focus {
   outline: none;
-  border-color: #88ff88;
-  box-shadow: 0 0 10px rgba(0, 255, 0, 0.5);
-  background: #001100;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 10px var(--shadow-strong);
+  background: var(--tertiary-background);
 }
 
 .input::placeholder {
-  color: #44aa44;
+  color: var(--text-color);
+  opacity: 0.6;
 }
 
 .button {
   width: 100%;
   padding: 1rem;
-  background: #000000;
-  border: 2px solid #00ff00;
+  background: var(--secondary-background);
+  border: 2px solid var(--border-color);
   border-radius: 4px;
-  color: #00ff00;
+  color: var(--text-color);
   font-size: 1.1rem;
   font-weight: bold;
   cursor: pointer;
@@ -60,12 +61,12 @@
 }
 
 .button:hover {
-  background: #00ff00;
-  color: #000000;
-  box-shadow: 0 0 15px rgba(0, 255, 0, 0.7);
+  background: var(--primary-color);
+  color: var(--background-color);
+  box-shadow: 0 0 15px var(--shadow-strong);
 }
 
 .button:active {
   transform: translateY(2px);
-  box-shadow: 0 0 10px rgba(0, 255, 0, 0.5);
+  box-shadow: 0 0 10px var(--shadow-color);
 } 

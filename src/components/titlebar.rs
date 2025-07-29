@@ -1,6 +1,6 @@
-use crate::components::UserInfo;
+use crate::components::Preferences;
 use crate::services::StorageService;
-use crate::types::{AppState, DashboardView};
+use crate::types::{AppState, DashboardView, Theme};
 use wasm_bindgen::prelude::*;
 use wasm_bindgen_futures::spawn_local;
 use web_sys::MouseEvent;
@@ -16,13 +16,15 @@ extern "C" {
 pub struct TitlebarProps {
     pub app_state: AppState,
     pub dashboard_view: DashboardView,
+    pub current_theme: Theme,
     pub on_state_change: Callback<AppState>,
     pub on_view_change: Callback<DashboardView>,
+    pub on_theme_change: Callback<Theme>,
 }
 
 #[function_component(Titlebar)]
 pub fn titlebar(props: &TitlebarProps) -> Html {
-    let show_user_info = use_state(|| false);
+    let show_preferences = use_state(|| false);
 
     let minimize_onclick = Callback::from(|_| {
         spawn_local(async move {
@@ -53,17 +55,17 @@ pub fn titlebar(props: &TitlebarProps) -> Html {
         })
     };
 
-    let toggle_user_info = {
-        let show_user_info = show_user_info.clone();
+    let toggle_preferences = {
+        let show_preferences = show_preferences.clone();
         Callback::from(move |_: MouseEvent| {
-            show_user_info.set(!*show_user_info);
+            show_preferences.set(!*show_preferences);
         })
     };
 
-    let close_user_info = {
-        let show_user_info = show_user_info.clone();
+    let close_preferences = {
+        let show_preferences = show_preferences.clone();
         Callback::from(move |_| {
-            show_user_info.set(false);
+            show_preferences.set(false);
         })
     };
 
@@ -126,8 +128,8 @@ pub fn titlebar(props: &TitlebarProps) -> Html {
                     {match &props.app_state {
                         AppState::Dashboard(_) => html! {
                             <>
-                                <button class="titlebar-nav-button user-info-button" onclick={toggle_user_info}>
-                                    {"User"}
+                                <button class="titlebar-nav-button preferences-button" onclick={toggle_preferences}>
+                                    {"Preferences"}
                                 </button>
                                 <button class="titlebar-nav-button logout-button" onclick={on_logout}>
                                     {"Logout"}
@@ -198,10 +200,12 @@ pub fn titlebar(props: &TitlebarProps) -> Html {
 
             {match &props.app_state {
                 AppState::Dashboard(user_data) => html! {
-                    <UserInfo
+                    <Preferences
                         user_data={user_data.clone()}
-                        show={*show_user_info}
-                        on_close={close_user_info}
+                        show={*show_preferences}
+                        current_theme={props.current_theme.clone()}
+                        on_close={close_preferences}
+                        on_theme_change={props.on_theme_change.clone()}
                     />
                 },
                 AppState::Login => html! {},

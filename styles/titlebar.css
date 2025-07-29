@@ -7,12 +7,12 @@
     align-items: center;
     justify-content: space-between;
     height: 40px;
-    background: #000000;
-    border-bottom: 2px solid #00ff00;
+    background: var(--background-color);
+    border-bottom: 2px solid var(--border-color);
     padding: 0 16px;
     -webkit-app-region: drag;
     user-select: none;
-    box-shadow: 0 0 20px rgba(0, 255, 0, 0.3);
+    box-shadow: 0 0 20px var(--shadow-color);
     z-index: 1000;
 }
 
@@ -30,32 +30,32 @@
 
 .tab-button {
     padding: 6px 16px;
-    background: #111111;
-    border: 1px solid #00ff00;
-    color: #00ff00;
+    background: var(--secondary-background);
+    border: 1px solid var(--border-color);
+    color: var(--text-color);
     cursor: pointer;
     font-size: 13px;
     border-radius: 4px;
     transition: all 0.3s ease;
     -webkit-app-region: no-drag;
-    box-shadow: 0 0 5px rgba(0, 255, 0, 0.3);
+    box-shadow: 0 0 5px var(--shadow-color);
     text-transform: uppercase;
     letter-spacing: 0.5px;
 }
 
 .tab-button:hover {
-    background: #00ff00;
-    color: #000000;
-    box-shadow: 0 0 10px rgba(0, 255, 0, 0.7);
+    background: var(--primary-color);
+    color: var(--background-color);
+    box-shadow: 0 0 10px var(--shadow-strong);
     transform: translateY(-1px);
 }
 
 .tab-button.active {
-    background: #003300;
-    border-color: #00ff00;
-    color: #00ff00;
+    background: var(--tertiary-background);
+    border-color: var(--border-color);
+    color: var(--text-color);
     font-weight: bold;
-    text-shadow: 0 0 5px #00ff00;
+    text-shadow: 0 0 5px var(--primary-color);
 }
 
 .titlebar-center {
@@ -68,8 +68,8 @@
 .page-title {
     font-size: 16px;
     font-weight: bold;
-    color: #00ff00;
-    text-shadow: 0 0 10px #00ff00;
+    color: var(--primary-color);
+    text-shadow: 0 0 10px var(--primary-color);
     font-family: 'Heinzheinrich', monospace;
     letter-spacing: 1px;
     margin-top:-15px; 
@@ -95,31 +95,45 @@
     border: 1px solid;
 }
 
+.titlebar-nav-button.preferences-button {
+    background: var(--tertiary-background);
+    border-color: var(--border-color);
+    color: var(--text-color);
+    box-shadow: 0 0 5px var(--shadow-color);
+}
+
+.titlebar-nav-button.preferences-button:hover {
+    background: var(--primary-color);
+    color: var(--background-color);
+    box-shadow: 0 0 15px var(--shadow-strong);
+    transform: translateY(-1px);
+}
+
 .titlebar-nav-button.user-info-button {
-    background: #003300;
-    border-color: #00ff00;
-    color: #00ff00;
-    box-shadow: 0 0 5px rgba(0, 255, 0, 0.3);
+    background: var(--tertiary-background);
+    border-color: var(--border-color);
+    color: var(--text-color);
+    box-shadow: 0 0 5px var(--shadow-color);
 }
 
 .titlebar-nav-button.user-info-button:hover {
-    background: #00ff00;
-    color: #000000;
-    box-shadow: 0 0 15px rgba(0, 255, 0, 0.7);
+    background: var(--primary-color);
+    color: var(--background-color);
+    box-shadow: 0 0 15px var(--shadow-strong);
     transform: translateY(-1px);
 }
 
 .titlebar-nav-button.logout-button {
-    background: #330000;
-    border-color: #ff0000;
-    color: #ff0000;
-    box-shadow: 0 0 5px rgba(255, 0, 0, 0.3);
+    background: var(--danger-background);
+    border-color: var(--danger-color);
+    color: var(--danger-color);
+    box-shadow: 0 0 5px var(--danger-shadow);
 }
 
 .titlebar-nav-button.logout-button:hover {
-    background: #ff0000;
-    color: #000000;
-    box-shadow: 0 0 15px rgba(255, 0, 0, 0.7);
+    background: var(--danger-color);
+    color: var(--background-color);
+    box-shadow: 0 0 15px var(--danger-shadow);
     transform: translateY(-1px);
 }
 
@@ -144,28 +158,28 @@
 .titlebar-button svg {
     width: 12px;
     height: 12px;
-    color: #00ff00;
+    color: var(--text-color);
 }
 
 .titlebar-button:hover {
-    background: rgba(0, 255, 0, 0.2);
-    box-shadow: 3px 3px 0px rgba(0, 255, 0, 0.5);
+    background: var(--shadow-color);
+    box-shadow: 3px 3px 0px var(--shadow-color);
     transform: translate(-1px, -1px);
 }
 
 .titlebar-button.minimize:hover svg {
-    color: #ffff00;
+    color: var(--primary-color);
 }
 
 .titlebar-button.maximize:hover svg {
-    color: #00ff00;
+    color: var(--primary-color);
 }
 
 .titlebar-button.close:hover {
-    background: #ff0000;
-    box-shadow: 3px 3px 0px rgba(255, 0, 0, 0.7);
+    background: var(--danger-color);
+    box-shadow: 3px 3px 0px var(--danger-shadow);
 }
 
 .titlebar-button.close:hover svg {
-    color: #ffffff;
+    color: var(--close-hover-color);
 }
