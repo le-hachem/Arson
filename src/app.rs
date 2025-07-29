@@ -1,6 +1,8 @@
 use crate::components::Titlebar;
 use crate::logging::console;
-use crate::states::{dashboard::Dashboard, login::Login, AppState, UserData};
+use crate::states::{
+    dataview::DataView, login::Login, map::Map, AppState, DashboardView, UserData,
+};
 use yew::prelude::*;
 
 #[function_component(App)]
@@ -36,10 +38,13 @@ pub fn app() -> Html {
                                                     "APP",
                                                     "Loading saved user data"
                                                 );
-                                                app_state.set(AppState::Dashboard(UserData {
-                                                    email: saved_email,
-                                                    api_key: saved_api_key,
-                                                }));
+                                                app_state.set(AppState::Dashboard(
+                                                    UserData {
+                                                        email: saved_email,
+                                                        api_key: saved_api_key,
+                                                    },
+                                                    DashboardView::Data,
+                                                ));
                                             } else {
                                                 console::warn!("Saved data is empty");
                                             }
@@ -84,17 +89,39 @@ pub fn app() -> Html {
         })
     };
 
+    let on_view_change = {
+        let app_state = app_state.clone();
+        Callback::from(move |new_view: DashboardView| {
+            if let AppState::Dashboard(user_data, _) = (*app_state).clone() {
+                app_state.set(AppState::Dashboard(user_data, new_view));
+            }
+        })
+    };
+
     html! {
         <div class="app">
-            <Titlebar />
+            <Titlebar
+                app_state={(*app_state).clone()}
+                on_state_change={on_state_change.clone()}
+                on_view_change={Some(on_view_change)}
+            />
             <main class="container">
                 {
                     match (*app_state).clone() {
                         AppState::Login => html! {
                             <Login on_state_change={on_state_change} />
                         },
-                        AppState::Dashboard(user_data) => html! {
-                            <Dashboard user_data={user_data} on_state_change={on_state_change} />
+                        AppState::Dashboard(user_data, view) => {
+                            html! {
+                                {match view {
+                                    DashboardView::Data => html! {
+                                        <DataView user_data={user_data.clone()} />
+                                    },
+                                    DashboardView::Map => html! {
+                                        <Map user_data={user_data.clone()} />
+                                    }
+                                }}
+                            }
                         }
                     }
                 }

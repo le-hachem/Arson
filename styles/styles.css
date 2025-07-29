@@ -14,15 +14,15 @@
 
 body {
   margin: 0;
-  padding-top: 25px;
-  overflow: auto;
+  padding: 0;
+  overflow: hidden;
 }
 
 .app {
-  min-height: 100vh;
+  height: 100vh;
   display: flex;
   flex-direction: column;
-  overflow: auto;
+  overflow: hidden;
 }
 
 :root {
@@ -35,13 +35,16 @@ body {
 }
 
 .container {
-  margin: 0;
+  flex: 1;
+  display: flex;
   flex-direction: column;
   justify-content: center;
+  align-items: center;
   text-align: center;
   overflow-y: auto;
-  max-height: 100vh;
   padding: 20px;
+  padding-top: 40px;
+  min-height: calc(100vh - 40px);
 }
 
 #title {
@@ -53,12 +56,7 @@ body {
   letter-spacing: 2px;
 }
 
-.description {
-  font-size: 1.2rem;
-  margin-bottom: 3rem;
-  color: #88ff88;
-  text-shadow: 0 0 5px #00ff00;
-}
+
 
 @keyframes scanlines {
   0% {
@@ -88,11 +86,34 @@ body {
   animation: scanlines 0.5s linear infinite;
 }
 
-.container {
-  margin: 0;
-  flex-direction: column;
-  justify-content: center;
-  text-align: center;
-  flex: 1;
-  padding: 20px;
-} 
+.map-container {
+    padding: 2rem;
+    height: calc(100vh - 40px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+.map-empty {
+    text-align: center;
+}
+
+
+
+.map-empty p {
+    margin: 0;
+    color: #00ff00;
+    font-size: 4rem;
+    text-shadow: 0 0 20px #00ff00;
+    font-family: 'Heinzheinrich', monospace;
+    font-weight: normal;
+    letter-spacing: 2px;
+}
+
+
+
+
+
+ 

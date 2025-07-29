@@ -1,5 +1,7 @@
 pub mod dashboard;
+pub mod dataview;
 pub mod login;
+pub mod map;
 
 #[derive(Clone, PartialEq)]
 pub struct UserData {
@@ -8,7 +10,13 @@ pub struct UserData {
 }
 
 #[derive(Clone, PartialEq)]
+pub enum DashboardView {
+    Data,
+    Map,
+}
+
+#[derive(Clone, PartialEq)]
 pub enum AppState {
     Login,
-    Dashboard(UserData),
+    Dashboard(UserData, DashboardView),
 }

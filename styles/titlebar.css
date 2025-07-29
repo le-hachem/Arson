@@ -1,54 +1,171 @@
 .titlebar {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 32px;
-  background: linear-gradient(to top, transparent, rgb(0, 0, 0));
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-  padding: 0 10px;
-  -webkit-app-region: drag;
-  z-index: 1000;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 40px;
+    background: #000000;
+    border-bottom: 2px solid #00ff00;
+    padding: 0 16px;
+    -webkit-app-region: drag;
+    user-select: none;
+    box-shadow: 0 0 20px rgba(0, 255, 0, 0.3);
+    z-index: 1000;
+}
+
+.titlebar-left {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    flex: 1;
+}
+
+.titlebar-tabs {
+    display: flex;
+    gap: 4px;
+}
+
+.tab-button {
+    padding: 6px 16px;
+    background: #111111;
+    border: 1px solid #00ff00;
+    color: #00ff00;
+    cursor: pointer;
+    font-size: 13px;
+    border-radius: 4px;
+    transition: all 0.3s ease;
+    -webkit-app-region: no-drag;
+    box-shadow: 0 0 5px rgba(0, 255, 0, 0.3);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.tab-button:hover {
+    background: #00ff00;
+    color: #000000;
+    box-shadow: 0 0 10px rgba(0, 255, 0, 0.7);
+    transform: translateY(-1px);
+}
+
+.tab-button.active {
+    background: #003300;
+    border-color: #00ff00;
+    color: #00ff00;
+    font-weight: bold;
+    text-shadow: 0 0 5px #00ff00;
+}
+
+.titlebar-center {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex: 1;
+}
+
+.page-title {
+    font-size: 16px;
+    font-weight: bold;
+    color: #00ff00;
+    text-shadow: 0 0 10px #00ff00;
+    font-family: 'Heinzheinrich', monospace;
+    letter-spacing: 1px;
+    margin-top:-15px; 
+}
+
+.titlebar-right {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex: 1;
+    justify-content: flex-end;
+}
+
+.titlebar-nav-button {
+    padding: 6px 12px;
+    cursor: pointer;
+    font-size: 12px;
+    border-radius: 4px;
+    transition: all 0.3s ease;
+    -webkit-app-region: no-drag;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    border: 1px solid;
+}
+
+.titlebar-nav-button.user-info-button {
+    background: #003300;
+    border-color: #00ff00;
+    color: #00ff00;
+    box-shadow: 0 0 5px rgba(0, 255, 0, 0.3);
+}
+
+.titlebar-nav-button.user-info-button:hover {
+    background: #00ff00;
+    color: #000000;
+    box-shadow: 0 0 15px rgba(0, 255, 0, 0.7);
+    transform: translateY(-1px);
+}
+
+.titlebar-nav-button.logout-button {
+    background: #330000;
+    border-color: #ff0000;
+    color: #ff0000;
+    box-shadow: 0 0 5px rgba(255, 0, 0, 0.3);
+}
+
+.titlebar-nav-button.logout-button:hover {
+    background: #ff0000;
+    color: #000000;
+    box-shadow: 0 0 15px rgba(255, 0, 0, 0.7);
+    transform: translateY(-1px);
 }
 
 .titlebar-controls {
-  display: flex;
-  align-items: center;
-  -webkit-app-region: no-drag;
+    display: flex;
+    gap: 1px;
 }
 
 .titlebar-button {
-  width: 32px;
-  height: 32px;
-  background: transparent;
-  color: #00ff00;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: all 0.1s ease;
-  border-radius: 0;
-  border: none;
-  padding: 0;
-  margin: 0;
+    width: 32px;
+    height: 32px;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.1s ease;
+    -webkit-app-region: no-drag;
 }
 
 .titlebar-button svg {
-  width: 30%;
-  height: 30%;
+    width: 12px;
+    height: 12px;
+    color: #00ff00;
 }
 
 .titlebar-button:hover {
-  background: rgba(0, 255, 0, 0.2);
-  box-shadow: 3px 3px 0px rgba(0, 255, 0, 0.5);
-  transform: translate(-1px, -1px);
+    background: rgba(0, 255, 0, 0.2);
+    box-shadow: 3px 3px 0px rgba(0, 255, 0, 0.5);
+    transform: translate(-1px, -1px);
+}
+
+.titlebar-button.minimize:hover svg {
+    color: #ffff00;
+}
+
+.titlebar-button.maximize:hover svg {
+    color: #00ff00;
 }
 
 .titlebar-button.close:hover {
-  background: #ff0000;
-  color: #ffffff;
-  box-shadow: 3px 3px 0px rgba(255, 0, 0, 0.7);
-  transform: translate(-1px, -1px);
+    background: #ff0000;
+    box-shadow: 3px 3px 0px rgba(255, 0, 0, 0.7);
+}
+
+.titlebar-button.close:hover svg {
+    color: #ffffff;
 }

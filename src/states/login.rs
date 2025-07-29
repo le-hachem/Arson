@@ -1,5 +1,5 @@
 use crate::logging::console;
-use crate::states::{AppState, UserData};
+use crate::states::{AppState, DashboardView, UserData};
 use wasm_bindgen::JsCast;
 use yew::prelude::*;
 
@@ -51,7 +51,7 @@ pub fn login(props: &LoginProps) -> Html {
                     email: email_value.clone(),
                     api_key: api_key_value.clone(),
                 };
-                on_state_change.emit(AppState::Dashboard(user_data));
+                on_state_change.emit(AppState::Dashboard(user_data, DashboardView::Data));
 
                 if let Some(window) = web_sys::window() {
                     console::log!("Saving user credentials to storage");
@@ -106,9 +106,6 @@ pub fn login(props: &LoginProps) -> Html {
     html! {
         <>
             <h1 id="title">{"Arson"}</h1>
-            <p class="description">
-                {"Conflict and military event visualizer."}
-            </p>
 
             <div class="form-container">
                 <div class="input-group">
@@ -116,7 +113,7 @@ pub fn login(props: &LoginProps) -> Html {
                     <input
                         type="email"
                         id="email"
-                        class="retro-input"
+                        class="input"
                         placeholder="Enter your email"
                         value={(*email).clone()}
                         oninput={on_email_input}
@@ -128,14 +125,14 @@ pub fn login(props: &LoginProps) -> Html {
                     <input
                         type="password"
                         id="api-key"
-                        class="retro-input"
+                        class="input"
                         placeholder="Enter your ACLED API key"
                         value={(*api_key).clone()}
                         oninput={on_api_key_input}
                     />
                 </div>
 
-                <button class="retro-button" onclick={on_submit}>{"Initialize"}</button>
+                <button class="button" onclick={on_submit}>{"Initialize"}</button>
             </div>
         </>
     }

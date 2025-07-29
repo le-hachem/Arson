@@ -1,6 +1,6 @@
 .form-container {
   max-width: 500px;
-  margin: 0 auto;
+  width: 100%;
   padding: 2rem;
   border: 2px solid #00ff00;
   border-radius: 8px;
@@ -21,7 +21,7 @@
   text-shadow: 0 0 5px #00ff00;
 }
 
-.retro-input {
+.input {
   width: 100%;
   padding: 0.75rem;
   background: #000000;
@@ -33,18 +33,18 @@
   transition: all 0.3s ease;
 }
 
-.retro-input:focus {
+.input:focus {
   outline: none;
   border-color: #88ff88;
   box-shadow: 0 0 10px rgba(0, 255, 0, 0.5);
   background: #001100;
 }
 
-.retro-input::placeholder {
+.input::placeholder {
   color: #44aa44;
 }
 
-.retro-button {
+.button {
   width: 100%;
   padding: 1rem;
   background: #000000;
@@ -59,13 +59,13 @@
   letter-spacing: 1px;
 }
 
-.retro-button:hover {
+.button:hover {
   background: #00ff00;
   color: #000000;
   box-shadow: 0 0 15px rgba(0, 255, 0, 0.7);
 }
 
-.retro-button:active {
+.button:active {
   transform: translateY(2px);
   box-shadow: 0 0 10px rgba(0, 255, 0, 0.5);
 } 
