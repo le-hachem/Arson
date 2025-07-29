@@ -1,5 +1,6 @@
 use crate::components::UserInfo;
-use crate::states::{AppState, DashboardView};
+use crate::services::StorageService;
+use crate::types::{AppState, DashboardView};
 use wasm_bindgen::prelude::*;
 use wasm_bindgen_futures::spawn_local;
 use web_sys::MouseEvent;
@@ -14,8 +15,9 @@ extern "C" {
 #[derive(Properties, PartialEq)]
 pub struct TitlebarProps {
     pub app_state: AppState,
+    pub dashboard_view: DashboardView,
     pub on_state_change: Callback<AppState>,
-    pub on_view_change: Option<Callback<DashboardView>>,
+    pub on_view_change: Callback<DashboardView>,
 }
 
 #[function_component(Titlebar)]
@@ -42,14 +44,10 @@ pub fn titlebar(props: &TitlebarProps) -> Html {
 
     let on_logout = {
         let on_state_change = props.on_state_change.clone();
-        let show_user_info = show_user_info.clone();
         Callback::from(move |_: MouseEvent| {
-            show_user_info.set(false);
-            if let Some(window) = web_sys::window() {
-                if let Ok(Some(storage)) = window.local_storage() {
-                    let _ = storage.remove_item("user_email");
-                    let _ = storage.remove_item("user_api_key");
-                }
+            // Use the service for storage management
+            if let Err(e) = StorageService::clear_user_data() {
+                console_error!("Failed to clear user data: {}", e);
             }
             on_state_change.emit(AppState::Login);
         })
@@ -69,57 +67,75 @@ pub fn titlebar(props: &TitlebarProps) -> Html {
         })
     };
 
+    let switch_to_map = {
+        let on_view_change = props.on_view_change.clone();
+        Callback::from(move |_: MouseEvent| {
+            on_view_change.emit(DashboardView::Map);
+        })
+    };
+
+    let switch_to_data = {
+        let on_view_change = props.on_view_change.clone();
+        Callback::from(move |_: MouseEvent| {
+            on_view_change.emit(DashboardView::DataList);
+        })
+    };
+
     html! {
         <>
             <div class="titlebar">
                 <div class="titlebar-left">
-                    if let AppState::Dashboard(_user_data, current_view) = &props.app_state {
-                        <div class="titlebar-tabs">
-                            <button
-                                class={if matches!(current_view, DashboardView::Data) { "tab-button active" } else { "tab-button" }}
-                                onclick={
-                                    let on_view_change = props.on_view_change.clone();
-                                    Callback::from(move |_: MouseEvent| {
-                                        if let Some(callback) = &on_view_change {
-                                            callback.emit(DashboardView::Data);
-                                        }
-                                    })
-                                }
-                            >
-                                {"Data"}
-                            </button>
-                            <button
-                                class={if matches!(current_view, DashboardView::Map) { "tab-button active" } else { "tab-button" }}
-                                onclick={
-                                    let on_view_change = props.on_view_change.clone();
-                                    Callback::from(move |_: MouseEvent| {
-                                        if let Some(callback) = &on_view_change {
-                                            callback.emit(DashboardView::Map);
-                                        }
-                                    })
-                                }
-                            >
-                                {"Map"}
-                            </button>
-                        </div>
-                    }
+                    {match &props.app_state {
+                        AppState::Dashboard(_) => html! {
+                            <div class="titlebar-tabs">
+                                <button
+                                    class={if props.dashboard_view == DashboardView::DataList { "tab-button active" } else { "tab-button" }}
+                                    onclick={switch_to_data}
+                                >
+                                    {"Data View"}
+                                </button>
+                                <button
+                                    class={if props.dashboard_view == DashboardView::Map { "tab-button active" } else { "tab-button" }}
+                                    onclick={switch_to_map}
+                                >
+                                    {"Map View"}
+                                </button>
+                            </div>
+                        },
+                        AppState::Login => html! {},
+                    }}
                 </div>
 
                 <div class="titlebar-center">
-                    if let AppState::Dashboard(_, _) = &props.app_state {
-                        <span class="page-title">{"Dashboard"}</span>
-                    }
+                    {match &props.app_state {
+                        AppState::Login => html! {
+                            <span class="page-title">{""}</span>
+                        },
+                        AppState::Dashboard(_) => html! {
+                            <span class="page-title">
+                                {match props.dashboard_view {
+                                    DashboardView::Map => "Interactive Map",
+                                    DashboardView::DataList => "Dashboard",
+                                }}
+                            </span>
+                        },
+                    }}
                 </div>
 
                 <div class="titlebar-right">
-                    if let AppState::Dashboard(_, _) = &props.app_state {
-                        <button class="titlebar-nav-button user-info-button" onclick={toggle_user_info}>
-                            {"User Info"}
-                        </button>
-                        <button class="titlebar-nav-button logout-button" onclick={on_logout}>
-                            {"Logout"}
-                        </button>
-                    }
+                    {match &props.app_state {
+                        AppState::Dashboard(_) => html! {
+                            <>
+                                <button class="titlebar-nav-button user-info-button" onclick={toggle_user_info}>
+                                    {"User"}
+                                </button>
+                                <button class="titlebar-nav-button logout-button" onclick={on_logout}>
+                                    {"Logout"}
+                                </button>
+                            </>
+                        },
+                        AppState::Login => html! {},
+                    }}
 
                     <div class="titlebar-controls">
                         <button class="titlebar-button minimize" onclick={minimize_onclick}>
@@ -180,19 +196,16 @@ pub fn titlebar(props: &TitlebarProps) -> Html {
                 </div>
             </div>
 
-            {
-                if let AppState::Dashboard(user_data, _) = &props.app_state {
-                    html! {
-                        <UserInfo
-                            user_data={user_data.clone()}
-                            show={*show_user_info}
-                            on_close={close_user_info}
-                        />
-                    }
-                } else {
-                    html! {}
-                }
-            }
+            {match &props.app_state {
+                AppState::Dashboard(user_data) => html! {
+                    <UserInfo
+                        user_data={user_data.clone()}
+                        show={*show_user_info}
+                        on_close={close_user_info}
+                    />
+                },
+                AppState::Login => html! {},
+            }}
         </>
     }
 }

@@ -1,8 +1,13 @@
 #[macro_use]
 mod logging;
+
 mod app;
 mod components;
+mod config;
+mod errors;
+mod services;
 mod states;
+mod types;
 
 use app::App;
 

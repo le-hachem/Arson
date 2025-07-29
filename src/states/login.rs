@@ -1,6 +1,8 @@
 use crate::logging::console;
-use crate::states::{AppState, DashboardView, UserData};
+use crate::services::StorageService;
+use crate::types::{AppState, UserData};
 use wasm_bindgen::JsCast;
+use web_sys::{HtmlInputElement, MouseEvent};
 use yew::prelude::*;
 
 #[derive(Properties, PartialEq)]
@@ -10,96 +12,83 @@ pub struct LoginProps {
 
 #[function_component(Login)]
 pub fn login(props: &LoginProps) -> Html {
-    let email = use_state(String::new);
-    let api_key = use_state(String::new);
+    let email = use_state(|| String::new());
+    let api_key = use_state(|| String::new());
+    let error_message = use_state(|| Option::<String>::None);
+
+    // Try to load saved credentials on component mount
+    {
+        let email = email.clone();
+        let api_key = api_key.clone();
+        use_effect_with((), move |_| {
+            if let Ok(Some(user_data)) = StorageService::load_user_data() {
+                email.set(user_data.email);
+                api_key.set(user_data.api_key);
+            }
+            || {}
+        });
+    }
 
     let on_email_input = {
         let email = email.clone();
+        let error_message = error_message.clone();
         Callback::from(move |e: InputEvent| {
-            let target = e
-                .target()
-                .unwrap()
-                .unchecked_into::<web_sys::HtmlInputElement>();
-            email.set(target.value());
+            let target = e.target().unwrap();
+            let input = target.unchecked_into::<HtmlInputElement>();
+            email.set(input.value());
+            error_message.set(None); // Clear error when user types
         })
     };
 
     let on_api_key_input = {
         let api_key = api_key.clone();
+        let error_message = error_message.clone();
         Callback::from(move |e: InputEvent| {
-            let target = e
-                .target()
-                .unwrap()
-                .unchecked_into::<web_sys::HtmlInputElement>();
-            api_key.set(target.value());
+            let target = e.target().unwrap();
+            let input = target.unchecked_into::<HtmlInputElement>();
+            api_key.set(input.value());
+            error_message.set(None); // Clear error when user types
         })
     };
 
     let on_submit = {
+        let on_state_change = props.on_state_change.clone();
         let email = email.clone();
         let api_key = api_key.clone();
-        let on_state_change = props.on_state_change.clone();
+        let error_message = error_message.clone();
+
         Callback::from(move |_: MouseEvent| {
+            console::log_user_action!("Submit button clicked");
             let email_value = (*email).clone();
             let api_key_value = (*api_key).clone();
 
-            console::log_user_action!("Submit button clicked");
+            console::log!(
+                "Form submitted with email: {} and API key length: {}",
+                email_value,
+                api_key_value.len()
+            );
 
-            if !email_value.is_empty() && !api_key_value.is_empty() {
-                console::log_with_context!("LOGIN", "Form data is valid, updating state");
-                let user_data = UserData {
-                    email: email_value.clone(),
-                    api_key: api_key_value.clone(),
-                };
-                on_state_change.emit(AppState::Dashboard(user_data, DashboardView::Data));
+            // Create and validate user data
+            let user_data = UserData::new(email_value, api_key_value);
 
-                if let Some(window) = web_sys::window() {
-                    console::log!("Saving user credentials to storage");
-
-                    match window.local_storage() {
-                        Ok(Some(storage)) => {
-                            console::debug!("Local storage available for saving");
-
-                            match storage.set_item("user_email", &email_value) {
-                                Ok(_) => {
-                                    console::log!("Successfully saved user email");
-                                }
-                                Err(e) => {
-                                    console::error_with_context!(
-                                        "LOGIN",
-                                        "Error saving email: {:?}",
-                                        e
-                                    )
-                                }
-                            }
-
-                            match storage.set_item("user_api_key", &api_key_value) {
-                                Ok(_) => {
-                                    console::log!("Successfully saved user API key");
-                                }
-                                Err(e) => console::error_with_context!(
-                                    "LOGIN",
-                                    "Error saving API key: {:?}",
-                                    e
-                                ),
-                            }
-                        }
-                        Ok(None) => console::error_with_context!(
-                            "LOGIN",
-                            "Local storage not available for saving"
-                        ),
-                        Err(e) => console::error_with_context!(
-                            "LOGIN",
-                            "Error accessing local storage for saving: {:?}",
-                            e
-                        ),
-                    }
-                } else {
-                    console::error_with_context!("LOGIN", "Window not available for saving");
-                }
-            } else {
-                console::warn!("Form data is invalid - email or API key is empty");
+            if !user_data.is_valid() {
+                error_message.set(Some("Please provide both email and API key.".to_string()));
+                console::warn!("Form validation failed - missing email or API key");
+                return;
             }
+
+            console::log!("Creating user data");
+
+            // Try to save user data
+            if let Err(e) = StorageService::save_user_data(&user_data) {
+                console::error_with_context!("LOGIN", "Failed to save credentials: {}", e);
+                // Continue anyway, don't block login
+            } else {
+                console::log_with_context!("LOGIN", "User credentials saved successfully");
+            }
+
+            // Transition to dashboard
+            on_state_change.emit(AppState::Dashboard(user_data));
         })
     };
 
@@ -108,6 +97,16 @@ pub fn login(props: &LoginProps) -> Html {
             <h1 id="title">{"Arson"}</h1>
 
             <div class="form-container">
+                {if let Some(error) = (*error_message).as_ref() {
+                    html! {
+                        <div class="error-message" style="margin-bottom: 1rem;">
+                            <strong>{"Error: "}</strong>{error}
+                        </div>
+                    }
+                } else {
+                    html! {}
+                }}
+
                 <div class="input-group">
                     <label for="email">{"Email Address:"}</label>
                     <input
